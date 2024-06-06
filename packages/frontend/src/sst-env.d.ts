@@ -1,7 +1,5 @@
 /// <reference types="vite/client" />
-  interface ImportMetaEnv {
-  
-  }
-  interface ImportMeta {
-    readonly env: ImportMetaEnv
-  }
+interface ImportMetaEnv {}
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

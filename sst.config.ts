@@ -4,13 +4,13 @@
 export default $config({
   app(input) {
     return {
-      name: "sst-ion-serverless-todoapp",
-      removal: input?.stage === "production" ? "retain" : "remove",
-      home: "aws",
+      name: 'sst-ion-serverless-todoapp',
+      removal: input?.stage === 'production' ? 'retain' : 'remove',
+      home: 'aws',
     };
   },
   async run() {
-    const infra = await import("./infra");
+    const infra = await import('./infra');
     return {
       url: infra.web.url,
     };
