@@ -1,0 +1,14 @@
+{
+  "name": "@sst-ion-serverless-todoapp/backend",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@sst-ion-serverless-todoapp/types": "workspace:^",
+    "@types/aws-lambda": "^8.10.138",
+    "@types/uuid": "^9.0.8"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.590.0",
+    "@aws-sdk/lib-dynamodb": "^3.590.0",
+    "uuid": "^9.0.1"
+  }
+}
