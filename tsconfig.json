@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["es2023"],
+    "module": "ESNext",
+
+    "moduleResolution": "node",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["./infra/*", "sst.config.ts"],
+  "references": [{ "path": "./packages/frontend/tsconfig.json" }]
+}
