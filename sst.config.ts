@@ -13,6 +13,9 @@ export default $config({
     const infra = await import('./infra');
     return {
       url: infra.web.url,
+      api: infra.api.url,
+      clientId: infra.userPoolClient.id,
+      authUrl: infra.authUrl,
     };
   },
 });
