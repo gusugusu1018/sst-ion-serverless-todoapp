@@ -5,13 +5,7 @@ import eslintConfigPrettier from "eslint-config-prettier";
 
 export default [
   {
-    ignores: [
-      "**/node_modules/**",
-      "**/dist/**",
-      ".sst/**",
-      ".prettier.js",
-      "packages/frontend/**",
-    ],
+    ignores: ["**/node_modules/**", "**/dist/**", ".sst/**", ".prettier.js"],
   },
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   pluginJs.configs.recommended,

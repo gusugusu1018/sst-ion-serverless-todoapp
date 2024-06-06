@@ -1,0 +1,84 @@
+name: Continuous Deployment
+
+env:
+  AWS_REGION: ap-northeast-1
+  AWS_OIDC_ROLE_ARN: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+  PNPM_STORE_PATH:
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  push:
+    paths-ignore:
+      - "**.md"
+    branches:
+      - main
+      - feature/setup-frontend
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Assume Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.AWS_OIDC_ROLE_ARN }}
+          aws-region: ${{env.AWS_REGION}}
+
+      - name: Setup sst ion cache
+        uses: actions/cache@v4
+        id: ion-cache
+        with:
+          path: ~/.sst
+          key: ${{ runner.os }}-sst-ion-${{ hashFiles('**/sst-version-lock.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-sst-ion-
+
+      - name: Check sst cache hit
+        run: 'echo "Cache hit: ${{ steps.ion-cache.outputs.cache-hit }}"'
+
+      - name: Install SST ion
+        if: steps.ion-cache.outputs.cache-hit != 'true'
+        run: bash ./install_sst.sh
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "PNPM_STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        id: pnpm-cache
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Check pnpm cache hit
+        run: 'echo "Cache hit: ${{ steps.pnpm-cache.outputs.cache-hit }}"'
+
+      - name: Install dependencies
+        if: steps.pnpm-cache.outputs.cache-hit != 'true'
+        run: pnpm install
+
+      - name: Deploy
+        run: sst deploy --stage prod
