@@ -9,5 +9,10 @@ export default $config({
       home: "aws",
     };
   },
-  async run() {},
+  async run() {
+    const infra = await import("./infra");
+    return {
+      url: infra.web.url,
+    };
+  },
 });
