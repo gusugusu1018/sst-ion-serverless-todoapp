@@ -1,0 +1,47 @@
+{
+  "name": "sst-ion-serverless-todoapp",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "sst dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "sst build",
+    "deploy": "sst deploy",
+    "remove": "sst remove",
+    "format": "./node_modules/.bin/prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "lint": "./node_modules/.bin/eslint . --report-unused-disable-directives --max-warnings 0"
+  },
+  "engines": {
+    "node": ">=16.8.0",
+    "npm": "use pnpm",
+    "pnpm": ">=7",
+    "yarn": "use pnpm"
+  },
+  "description": "This is a serverless Todo application built using SST ion, organized as a monorepo.",
+  "keywords": [
+    "sst",
+    "ion",
+    "typescript",
+    "react",
+    "vite",
+    "lambda",
+    "dynamodb",
+    "cognito"
+  ],
+  "author": "gusugusu1018@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "sst": "^3.0.32"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.4.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@tsconfig/node20": "^20.1.4",
+    "eslint": "~8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.3.0",
+    "prettier": "^3.3.1",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.12.0"
+  }
+}
