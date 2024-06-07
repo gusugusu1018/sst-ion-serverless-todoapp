@@ -1,10 +1,19 @@
+import { api } from './api';
+import { authUrl, userPool, userPoolClient } from './auth';
+
 const commonConfig = {
   path: 'packages/frontend',
   build: {
     output: 'dist',
     command: 'pnpm run build',
   },
-  environment: {},
+  environment: {
+    VITE_API_URL: api.url,
+    VITE_REGION: aws.getRegionOutput().name,
+    VITE_USER_POOL_ID: userPool.id,
+    VITE_USER_POOL_CLIENT_ID: userPoolClient.id,
+    VITE_USER_POOL_DOMAIN: authUrl,
+  },
 };
 
 const domainConfig = {

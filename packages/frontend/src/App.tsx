@@ -1,36 +1,139 @@
-import { useState } from 'react';
+import { AccountCircle } from '@mui/icons-material';
+import {
+  AppBar,
+  Box,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from '@mui/material';
+import { getCurrentUser, signOut } from 'aws-amplify/auth';
+import React, { useEffect, useState } from 'react';
+import {
+  Link as RouterLink,
+  useLocation,
+  useNavigate,
+  useRoutes,
+} from 'react-router-dom';
 
-import './App.css';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import { SignInButton } from './components/SignInButton';
+import { SignUpButton } from './components/SignUpButton';
+import NotFound from './pages/NotFound';
+import TodoList from './pages/TodoList';
+import Welcome from './pages/Welcome';
 
-function App() {
-  const [count, setCount] = useState(0);
+const App: React.FC = () => {
+  const [signedIn, setSignedIn] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await getCurrentUser();
+        setSignedIn(true);
+        navigate('/todos');
+      } catch {
+        setSignedIn(false);
+      }
+    };
+
+    checkAuth();
+  }, [signedIn, location.pathname]);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      setSignedIn(false);
+      navigate('/');
+      setAnchorEl(null);
+    } catch (error) {
+      console.error('Error signing out', error);
+    }
+  };
+
+  const routing = useRoutes([
+    {
+      path: '/',
+      element: <Welcome />,
+    },
+    {
+      path: '/todos',
+      element: <TodoList />,
+    },
+    {
+      path: '*',
+      element: <NotFound />,
+    },
+  ]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            <RouterLink
+              to="/"
+              style={{ color: 'inherit', textDecoration: 'none' }}
+            >
+              ion todo
+            </RouterLink>
+          </Typography>
+          {!signedIn ? (
+            <>
+              <Box mr={2}>
+                <SignInButton onSignIn={() => setSignedIn(true)} />
+              </Box>
+              <SignUpButton onSignUp={() => setSignedIn(true)} />
+            </>
+          ) : (
+            <>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+                <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+                <MenuItem onClick={handleSignOut}> Sign out</MenuItem>
+              </Menu>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+      <Container>{routing}</Container>
     </>
   );
-}
+};
 
 export default App;

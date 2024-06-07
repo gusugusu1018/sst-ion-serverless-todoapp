@@ -4,16 +4,24 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "sst dev vite dev",
     "build": "tsc && vite build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.19",
+    "@mui/material": "^5.15.19",
+    "aws-amplify": "^6.3.6",
+    "axios": "^1.7.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
+    "@sst-ion-serverless-todoapp/types": "workspace:^",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
