@@ -4,8 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "sst dev",
-    "dev:frontend": "npm --prefix frontend run dev",
-    "build": "sst build",
+    "dev:frontend": "npm --prefix packages/frontend run dev",
     "deploy": "sst deploy",
     "remove": "sst remove",
     "format": "./node_modules/.bin/prettier --write '**/*.{js,jsx,ts,tsx}'",
