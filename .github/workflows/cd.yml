@@ -12,7 +12,7 @@ permissions:
 on:
   push:
     paths-ignore:
-      - "**.md"
+      - '**.md'
     branches:
       - main
 
@@ -80,4 +80,4 @@ jobs:
         run: pnpm install
 
       - name: Deploy
-        run: sst deploy --stage prod
+        run: sst deploy --stage uat

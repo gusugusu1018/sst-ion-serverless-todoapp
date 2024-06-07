@@ -1,5 +1,8 @@
 export const userPool = new sst.aws.CognitoUserPool('UserPool', {
   usernames: ['email'],
+  triggers: {
+    // postAuthentication: 'src/postAuthentication.handler',
+  },
   transform: {
     userPool: {
       accountRecoverySetting: {
@@ -16,7 +19,7 @@ export const userPool = new sst.aws.CognitoUserPool('UserPool', {
 });
 
 const userPoolDomain = new aws.cognito.UserPoolDomain('UserPoolDomain', {
-  domain: 'sst-ion-serverless-todoapp',
+  domain: $concat($app.name, '-', $app.stage), // Amazon Cognito domain
   userPoolId: userPool.id,
 });
 
