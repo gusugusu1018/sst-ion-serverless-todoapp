@@ -15,7 +15,7 @@
   "include": ["./infra/*", "sst.config.ts"],
   "references": [
     { "path": "./packages/types/tsconfig.json" },
-    { "path": "./packages/frontend/tsconfig.json" },
+    // { "path": "./packages/frontend/tsconfig.json" },
     { "path": "./packages/backend/tsconfig.json" }
   ]
 }
