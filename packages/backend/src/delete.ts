@@ -1,22 +1,15 @@
-import { DeleteCommandInput } from '@aws-sdk/lib-dynamodb';
-import { Resource } from 'sst';
-
-import dynamoDb from './core/dynamodb';
 import handler from './core/handler';
+import { TaskEntity } from './entities/task';
 
 export const main = handler(async (event) => {
+  if (!event?.pathParameters?.id) {
+    throw new Error('Missing taskId in path parameters');
+  }
+
   const claims = event.requestContext.authorizer?.jwt.claims;
-  const userId = claims.sub;
-
-  const params: DeleteCommandInput = {
-    TableName: Resource.TaskTable.name,
-    Key: {
-      userId: userId,
-      taskId: event?.pathParameters?.id, // The id of the note from the path
-    },
-  };
-
-  await dynamoDb.delete(params);
-
+  await TaskEntity.delete({
+    userId: claims.sub,
+    taskId: event?.pathParameters?.id,
+  }).go();
   return JSON.stringify({ status: true });
 });

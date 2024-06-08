@@ -1,10 +1,8 @@
-import { PutCommandInput } from '@aws-sdk/lib-dynamodb';
-import { CreateTodoRequest, Todo } from '@sst-ion-serverless-todoapp/types';
-import { Resource } from 'sst';
+import { CreateTodoRequest } from '@sst-ion-serverless-todoapp/types';
 import * as uuid from 'uuid';
 
-import dynamoDb from './core/dynamodb';
 import handler from './core/handler';
+import { TaskEntity, TaskEntityType } from './entities/task';
 
 export const main = handler(async (event) => {
   const data = JSON.parse(event.body || '{}') as CreateTodoRequest;
@@ -15,19 +13,14 @@ export const main = handler(async (event) => {
   }
 
   const claims = event.requestContext.authorizer?.jwt.claims;
-  const todoItem: Todo = {
+  const newTask: TaskEntityType = {
     userId: claims.sub,
-    taskId: uuid.v1(),
+    taskId: uuid.v4(),
     title: data.title,
     completed: false,
-    createdAt: Date.now(),
+    createdAt: new Date().toISOString(),
   };
+  const result = await TaskEntity.create(newTask).go();
 
-  const params: PutCommandInput = {
-    TableName: Resource.TaskTable.name,
-    Item: todoItem,
-  };
-
-  await dynamoDb.put(params);
-  return JSON.stringify(todoItem);
+  return JSON.stringify(result.data);
 });
