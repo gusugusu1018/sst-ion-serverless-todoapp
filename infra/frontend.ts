@@ -1,5 +1,5 @@
 import { api } from './api';
-import { authUrl, userPool, userPoolClient } from './auth';
+import { userPool, userPoolClient } from './auth';
 
 const commonConfig = {
   path: 'packages/frontend',
@@ -12,7 +12,6 @@ const commonConfig = {
     VITE_REGION: aws.getRegionOutput().name,
     VITE_USER_POOL_ID: userPool.id,
     VITE_USER_POOL_CLIENT_ID: userPoolClient.id,
-    VITE_USER_POOL_DOMAIN: authUrl,
   },
 };
 
