@@ -4,5 +4,5 @@
   "editor.formatOnPaste": false,
   "editor.linkedEditing": true,
   "eslint.experimental.useFlatConfig": true,
-  "cSpell.words": ["amazoncognito", "signin", "todoapp", "todos"]
+  "cSpell.words": ["amazoncognito", "electrodb", "signin", "todoapp", "todos"]
 }
