@@ -13,6 +13,9 @@ on:
   push:
     paths-ignore:
       - '**.md'
+      - 'docs/**'
+      - '.vscode/**'
+      - '.prettierignore'
     branches:
       - main
 
