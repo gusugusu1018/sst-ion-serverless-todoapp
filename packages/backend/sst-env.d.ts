@@ -3,7 +3,7 @@
 import "sst"
 declare module "sst" {
   export interface Resource {
-    TaskTable: {
+    Table: {
       name: string
       type: "sst.aws.Dynamo"
     }

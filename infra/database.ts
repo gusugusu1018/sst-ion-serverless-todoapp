@@ -1,11 +1,24 @@
-export const table = new sst.aws.Dynamo('TaskTable', {
+export const table = new sst.aws.Dynamo('Table', {
   fields: {
-    userId: 'string',
-    taskId: 'string',
-    createdAt: 'number',
+    pk: 'string',
+    sk: 'string',
+    gsi1pk: 'string',
+    gsi1sk: 'string',
+    gsi2pk: 'string',
+    gsi2sk: 'string',
   },
-  primaryIndex: { hashKey: 'userId', rangeKey: 'taskId' },
+  primaryIndex: {
+    hashKey: 'pk',
+    rangeKey: 'sk',
+  },
   globalIndexes: {
-    CreatedAtIndex: { hashKey: 'userId', rangeKey: 'createdAt' },
+    'gsi1pk-gsi1sk-index': {
+      hashKey: 'gsi1pk',
+      rangeKey: 'gsi1sk',
+    },
+    'gsi2pk-gsi2sk-index': {
+      hashKey: 'gsi2pk',
+      rangeKey: 'gsi2sk',
+    },
   },
 });
