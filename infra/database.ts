@@ -6,6 +6,7 @@ export const table = new sst.aws.Dynamo('Table', {
     gsi1sk: 'string',
     gsi2pk: 'string',
     gsi2sk: 'string',
+    lsi1sk: 'string',
   },
   primaryIndex: {
     hashKey: 'pk',
@@ -19,6 +20,12 @@ export const table = new sst.aws.Dynamo('Table', {
     'gsi2pk-gsi2sk-index': {
       hashKey: 'gsi2pk',
       rangeKey: 'gsi2sk',
+    },
+  },
+  localIndexes: {
+    'lsi1pk-lsi1sk-index': {
+      hashKey: 'pk',
+      rangeKey: 'lsi1sk',
     },
   },
 });

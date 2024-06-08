@@ -44,13 +44,13 @@ export const TaskEntity = new Entity(
         },
       },
       tasks: {
-        index: 'gsi1pk-gsi1sk-index',
+        index: 'lsi1pk-lsi1sk-index',
         pk: {
-          field: 'gsi1pk',
+          field: 'pk',
           composite: ['userId'],
         },
         sk: {
-          field: 'gsi1sk',
+          field: 'lsi1sk',
           composite: ['createdAt'],
         },
       },
