@@ -7,7 +7,7 @@ export interface Todo {
   taskId: string;
   // createdAt: Date.now()
   // dynamodb: gsi1sk
-  createdAt: number;
+  createdAt: string;
   title: string;
   completed: boolean;
 }
