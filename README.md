@@ -1,3 +1,5 @@
+![Static Badge](https://img.shields.io/badge/license-MIT-brightgreen)
+
 # Serverless Todo Application with SST
 
 This is a serverless Todo application built using SST ion, organized as a monorepo.
