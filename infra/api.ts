@@ -26,11 +26,6 @@ api.route('POST /todos', {
   handler: 'packages/backend/src/create.main',
 });
 
-api.route('GET /todos/{id}', {
-  link: [table],
-  handler: 'packages/backend/src/get.main',
-});
-
 api.route('PUT /todos/{id}', {
   link: [table],
   handler: 'packages/backend/src/update.main',
