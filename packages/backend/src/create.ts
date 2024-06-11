@@ -1,26 +1,49 @@
+// import { parser } from '@aws-lambda-powertools/parser/middleware';
+import middy from '@middy/core';
+import httpErrorHandler from '@middy/http-error-handler';
+import jsonBodyParser from '@middy/http-json-body-parser';
 import { CreateTodoRequest } from '@sst-ion-serverless-todoapp/types';
+import {
+  APIGatewayProxyEventV2,
+  APIGatewayProxyEventV2WithJWTAuthorizer,
+  APIGatewayProxyResult,
+} from 'aws-lambda';
 import * as uuid from 'uuid';
+import { z } from 'zod';
 
-import handler from './core/handler';
 import { TaskEntity, TaskEntityType } from './entities/task';
+import HttpStatusCode from './lib/HttpStatusCode';
+import zodValidationMiddleware from './middleware/zod-validator';
 
-export const main = handler(async (event) => {
-  const data = JSON.parse(event.body || '{}') as CreateTodoRequest;
+const CreateTodoRequestSchema = z.object({
+  title: z.string(),
+});
 
-  // Check if title is present in the request body
-  if (data.title === undefined) {
-    throw new Error('Missing title in request body');
-  }
+const lambdaHandler = async (
+  event: APIGatewayProxyEventV2WithJWTAuthorizer & { body: CreateTodoRequest },
+): Promise<APIGatewayProxyResult> => {
+  const body: CreateTodoRequest = event.body;
 
-  const claims = event.requestContext.authorizer?.jwt.claims;
+  // create new task
+  const claims = event.requestContext.authorizer.jwt.claims;
   const newTask: TaskEntityType = {
-    userId: claims.sub,
+    userId: claims.sub.toString(),
     taskId: uuid.v4(),
-    title: data.title,
+    title: body.title,
     completed: false,
     createdAt: new Date().toISOString(),
   };
   const result = await TaskEntity.create(newTask).go();
 
-  return JSON.stringify(result.data);
-});
+  return {
+    statusCode: HttpStatusCode.CREATED,
+    headers: { contentType: 'application/json' },
+    body: JSON.stringify(result.data),
+  };
+};
+
+export const main = middy<APIGatewayProxyEventV2, APIGatewayProxyResult>()
+  .use(jsonBodyParser())
+  .use(zodValidationMiddleware(CreateTodoRequestSchema))
+  .use(httpErrorHandler())
+  .handler(lambdaHandler);

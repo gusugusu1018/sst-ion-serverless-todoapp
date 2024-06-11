@@ -1,28 +1,48 @@
+import middy from '@middy/core';
+import httpErrorHandler from '@middy/http-error-handler';
+import jsonBodyParser from '@middy/http-json-body-parser';
 import { UpdateTodoRequest } from '@sst-ion-serverless-todoapp/types';
+import {
+  APIGatewayProxyEventV2,
+  APIGatewayProxyEventV2WithJWTAuthorizer,
+  APIGatewayProxyResult,
+} from 'aws-lambda';
+import { z } from 'zod';
 
-import handler from './core/handler';
 import { TaskEntity } from './entities/task';
+import HttpStatusCode from './lib/HttpStatusCode';
+import zodValidationMiddleware from './middleware/zod-validator';
 
-// update complete status of a todo
-export const main = handler(async (event) => {
-  const data = JSON.parse(event.body || '{}') as UpdateTodoRequest;
-  // Check if completed is present in the request body
-  if (data.completed === undefined) {
-    throw new Error('Missing completed in request body');
-  }
+const UpdateTodoRequestSchema = z.object({
+  completed: z.boolean(),
+});
 
-  if (event?.pathParameters?.id === undefined) {
+const lambdaHandler = async (
+  event: APIGatewayProxyEventV2WithJWTAuthorizer & { body: UpdateTodoRequest },
+): Promise<APIGatewayProxyResult> => {
+  if (!event?.pathParameters?.id) {
     throw new Error('Missing taskId in path parameters');
   }
 
-  const claims = event.requestContext.authorizer?.jwt.claims;
+  const claims = event.requestContext.authorizer.jwt.claims;
 
   const result = await TaskEntity.update({
-    userId: claims.sub,
+    userId: claims.sub.toString(),
     taskId: event?.pathParameters?.id,
   })
-    .set({ completed: data.completed })
+    .set({ completed: event.body.completed })
     .go({ response: 'all_new' });
 
-  return JSON.stringify(result.data);
-});
+  console.log(result.data);
+  return {
+    statusCode: HttpStatusCode.OK,
+    headers: { contentType: 'application/json' },
+    body: JSON.stringify(result.data),
+  };
+};
+
+export const main = middy<APIGatewayProxyEventV2, APIGatewayProxyResult>()
+  .use(jsonBodyParser())
+  .use(zodValidationMiddleware(UpdateTodoRequestSchema))
+  .use(httpErrorHandler())
+  .handler(lambdaHandler);

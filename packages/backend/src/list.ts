@@ -1,9 +1,28 @@
-import handler from './core/handler';
-import { TaskEntity } from './entities/task';
+import middy from '@middy/core';
+import httpErrorHandler from '@middy/http-error-handler';
+import {
+  APIGatewayProxyEventV2,
+  APIGatewayProxyEventV2WithJWTAuthorizer,
+  APIGatewayProxyResult,
+} from 'aws-lambda';
 
-export const main = handler(async (event) => {
-  const claims = event.requestContext.authorizer?.jwt.claims;
-  const userId = claims.sub;
+import { TaskEntity } from './entities/task';
+import HttpStatusCode from './lib/HttpStatusCode';
+
+const lambdaHandler = async (
+  event: APIGatewayProxyEventV2WithJWTAuthorizer,
+): Promise<APIGatewayProxyResult> => {
+  const claims = event.requestContext.authorizer.jwt.claims;
+  const userId = claims.sub.toString();
   const tasks = await TaskEntity.query.tasks({ userId }).go({ order: 'asc' });
-  return JSON.stringify(tasks.data);
-});
+
+  return {
+    statusCode: HttpStatusCode.OK,
+    headers: { contentType: 'application/json' },
+    body: JSON.stringify(tasks.data),
+  };
+};
+
+export const main = middy<APIGatewayProxyEventV2, APIGatewayProxyResult>()
+  .use(httpErrorHandler())
+  .handler(lambdaHandler);
