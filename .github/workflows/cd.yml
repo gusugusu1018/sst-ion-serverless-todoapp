@@ -43,12 +43,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-sst-ion-
 
-      - name: Check sst cache hit
-        run: 'echo "Cache hit: ${{ steps.ion-cache.outputs.cache-hit }}"'
+      - name: Setup sst from cache
+        if: steps.ion-cache.outputs.cache-hit == 'true'
+        run: 'echo "~/.sst/bin" >> $GITHUB_PATH'
 
-      - name: Install SST ion
+      - name: Install SST ion if not from cache
         if: steps.ion-cache.outputs.cache-hit != 'true'
         run: bash ./install_sst.sh
+
+      - name: Disable SST telemetry
+        run: sst telemetry disable
 
       - name: Install Node.js
         uses: actions/setup-node@v4
