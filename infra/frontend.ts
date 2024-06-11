@@ -1,5 +1,6 @@
 import { api } from './api';
 import { userPool, userPoolClient } from './auth';
+import { domain } from './domain';
 
 const commonConfig = {
   path: 'packages/frontend',
@@ -15,12 +16,8 @@ const commonConfig = {
   },
 };
 
-const domainConfig = {
-  domain: 'ion-todo.com',
-};
-
 // TODO: change stage to 'production' when ready
 const webConfig =
-  $app.stage === 'uat' ? { ...commonConfig, ...domainConfig } : commonConfig;
+  $app.stage === 'uat' ? { ...commonConfig, domain } : commonConfig;
 
 export const web = new sst.aws.StaticSite('StaticSite', webConfig);

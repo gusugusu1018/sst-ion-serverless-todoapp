@@ -1,8 +1,23 @@
 import { userPool, userPoolClient } from './auth';
 import { table } from './database';
+import { domain } from './domain';
+
+const corsCommonConfig = {
+  allowHeaders: ['Content-Type', 'Authorization'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+};
+
+// TODO: change stage to 'production' when ready
+const corsConfiguration =
+  $app.stage === 'uat'
+    ? { ...corsCommonConfig, allowOrigins: [$interpolate`https://${domain}`] }
+    : { ...corsCommonConfig, allowOrigins: ['*'] };
 
 export const api = new sst.aws.ApiGatewayV2('Api', {
   transform: {
+    api: {
+      corsConfiguration,
+    },
     route: {
       args: (props) => {
         props.auth = {
