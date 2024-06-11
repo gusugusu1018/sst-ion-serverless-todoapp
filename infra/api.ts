@@ -33,20 +33,20 @@ export const api = new sst.aws.ApiGatewayV2('Api', {
 
 api.route('GET /todos', {
   link: [table],
-  handler: 'packages/backend/src/list.main',
+  handler: 'packages/backend/src/taskService/list.main',
 });
 
 api.route('POST /todos', {
   link: [table],
-  handler: 'packages/backend/src/create.main',
+  handler: 'packages/backend/src/taskService/create.main',
 });
 
 api.route('PUT /todos/{id}', {
   link: [table],
-  handler: 'packages/backend/src/update.main',
+  handler: 'packages/backend/src/taskService/update.main',
 });
 
 api.route('DELETE /todos/{id}', {
   link: [table],
-  handler: 'packages/backend/src/delete.main',
+  handler: 'packages/backend/src/taskService/delete.main',
 });

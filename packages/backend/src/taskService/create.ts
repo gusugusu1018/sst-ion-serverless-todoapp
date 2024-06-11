@@ -11,9 +11,9 @@ import {
 import * as uuid from 'uuid';
 import { z } from 'zod';
 
-import { TaskEntity, TaskEntityType } from './entities/task';
-import HttpStatusCode from './lib/HttpStatusCode';
-import zodValidationMiddleware from './middleware/zod-validator';
+import { TaskEntity, TaskEntityType } from '../entities/task';
+import zodValidationMiddleware from '../lib/middleware/zod-validator';
+import HttpStatusCode from '../lib/utils/HttpStatusCode';
 
 const CreateTodoRequestSchema = z.object({
   title: z.string(),

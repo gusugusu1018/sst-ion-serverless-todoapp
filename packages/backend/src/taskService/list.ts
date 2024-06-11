@@ -6,26 +6,20 @@ import {
   APIGatewayProxyResult,
 } from 'aws-lambda';
 
-import { TaskEntity } from './entities/task';
-import HttpStatusCode from './lib/HttpStatusCode';
+import { TaskEntity } from '../entities/task';
+import HttpStatusCode from '../lib/utils/HttpStatusCode';
 
 const lambdaHandler = async (
   event: APIGatewayProxyEventV2WithJWTAuthorizer,
 ): Promise<APIGatewayProxyResult> => {
-  if (!event?.pathParameters?.id) {
-    throw new Error('Missing taskId in path parameters');
-  }
-
   const claims = event.requestContext.authorizer.jwt.claims;
-  await TaskEntity.delete({
-    userId: claims.sub.toString(),
-    taskId: event?.pathParameters?.id,
-  }).go();
+  const userId = claims.sub.toString();
+  const tasks = await TaskEntity.query.tasks({ userId }).go({ order: 'asc' });
 
   return {
     statusCode: HttpStatusCode.OK,
     headers: { contentType: 'application/json' },
-    body: JSON.stringify({ message: 'Task successfully deleted' }),
+    body: JSON.stringify(tasks.data),
   };
 };
 

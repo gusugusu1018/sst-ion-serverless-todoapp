@@ -9,9 +9,9 @@ import {
 } from 'aws-lambda';
 import { z } from 'zod';
 
-import { TaskEntity } from './entities/task';
-import HttpStatusCode from './lib/HttpStatusCode';
-import zodValidationMiddleware from './middleware/zod-validator';
+import { TaskEntity } from '../entities/task';
+import zodValidationMiddleware from '../lib/middleware/zod-validator';
+import HttpStatusCode from '../lib/utils/HttpStatusCode';
 
 const UpdateTodoRequestSchema = z.object({
   completed: z.boolean(),
@@ -33,7 +33,6 @@ const lambdaHandler = async (
     .set({ completed: event.body.completed })
     .go({ response: 'all_new' });
 
-  console.log(result.data);
   return {
     statusCode: HttpStatusCode.OK,
     headers: { contentType: 'application/json' },

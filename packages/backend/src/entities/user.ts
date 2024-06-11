@@ -1,6 +1,6 @@
 import { Entity, type EntityItem } from 'electrodb';
 
-import { entityConfig } from '../core/dynamodb';
+import { entityConfig } from './dynamodb';
 
 export const User = new Entity(
   {
