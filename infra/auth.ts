@@ -1,7 +1,16 @@
+import { table } from './database';
+
 export const userPool = new sst.aws.CognitoUserPool('UserPool', {
   usernames: ['email'],
   triggers: {
-    // postAuthentication: 'src/postAuthentication.handler',
+    postConfirmation: {
+      handler: 'packages/backend/src/userService/postConfirmation.main',
+      link: [table],
+    },
+    postAuthentication: {
+      handler: 'packages/backend/src/userService/postAuthentication.main',
+      link: [table],
+    },
   },
   transform: {
     userPool: {

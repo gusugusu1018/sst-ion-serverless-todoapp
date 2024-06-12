@@ -2,7 +2,7 @@ import { Entity, type EntityItem } from 'electrodb';
 
 import { entityConfig } from './dynamodb';
 
-export const User = new Entity(
+export const UserEntity = new Entity(
   {
     model: {
       version: '1',
@@ -27,6 +27,11 @@ export const User = new Entity(
         required: true,
         default: () => `${new Date().toISOString()}`,
       },
+      lastSignedInAt: {
+        type: 'string',
+        required: false,
+        default: () => `${new Date().toISOString()}`,
+      },
     },
     indexes: {
       users: {
@@ -44,4 +49,4 @@ export const User = new Entity(
   entityConfig,
 );
 
-export type UserEntity = EntityItem<typeof User>;
+export type UserEntityType = EntityItem<typeof UserEntity>;
