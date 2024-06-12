@@ -1,23 +1,20 @@
-// import { parser } from '@aws-lambda-powertools/parser/middleware';
 import middy from '@middy/core';
 import httpErrorHandler from '@middy/http-error-handler';
 import jsonBodyParser from '@middy/http-json-body-parser';
-import { CreateTodoRequest } from '@sst-ion-serverless-todoapp/types';
+import {
+  CreateTodoRequest,
+  CreateTodoRequestSchema,
+} from '@sst-ion-serverless-todoapp/types';
 import {
   APIGatewayProxyEventV2,
   APIGatewayProxyEventV2WithJWTAuthorizer,
   APIGatewayProxyResult,
 } from 'aws-lambda';
 import * as uuid from 'uuid';
-import { z } from 'zod';
 
 import { TaskEntity, TaskEntityType } from '../entities/task';
 import zodValidationMiddleware from '../lib/middleware/zod-validator';
 import HttpStatusCode from '../lib/utils/HttpStatusCode';
-
-const CreateTodoRequestSchema = z.object({
-  title: z.string(),
-});
 
 const lambdaHandler = async (
   event: APIGatewayProxyEventV2WithJWTAuthorizer & { body: CreateTodoRequest },

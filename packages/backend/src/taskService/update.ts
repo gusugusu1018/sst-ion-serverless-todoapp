@@ -1,21 +1,19 @@
 import middy from '@middy/core';
 import httpErrorHandler from '@middy/http-error-handler';
 import jsonBodyParser from '@middy/http-json-body-parser';
-import { UpdateTodoRequest } from '@sst-ion-serverless-todoapp/types';
+import {
+  UpdateTodoRequest,
+  UpdateTodoRequestSchema,
+} from '@sst-ion-serverless-todoapp/types';
 import {
   APIGatewayProxyEventV2,
   APIGatewayProxyEventV2WithJWTAuthorizer,
   APIGatewayProxyResult,
 } from 'aws-lambda';
-import { z } from 'zod';
 
 import { TaskEntity } from '../entities/task';
 import zodValidationMiddleware from '../lib/middleware/zod-validator';
 import HttpStatusCode from '../lib/utils/HttpStatusCode';
-
-const UpdateTodoRequestSchema = z.object({
-  completed: z.boolean(),
-});
 
 const lambdaHandler = async (
   event: APIGatewayProxyEventV2WithJWTAuthorizer & { body: UpdateTodoRequest },

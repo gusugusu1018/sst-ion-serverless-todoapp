@@ -1,4 +1,7 @@
 {
   "name": "@sst-ion-serverless-todoapp/types",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "dependencies": {
+    "zod": "^3.23.8"
+  }
 }

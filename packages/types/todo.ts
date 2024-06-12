@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export interface Todo {
   // userId: jwt sub
   // dynamodb: pk, gsi1pk
@@ -18,3 +20,11 @@ export type CreateTodoRequest = Omit<
 >;
 
 export type UpdateTodoRequest = Omit<Todo, 'userId' | 'createdAt' | 'title'>;
+
+export const CreateTodoRequestSchema = z.object({
+  title: z.string(),
+});
+
+export const UpdateTodoRequestSchema = z.object({
+  completed: z.boolean(),
+});
