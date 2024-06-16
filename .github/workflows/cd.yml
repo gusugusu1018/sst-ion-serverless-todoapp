@@ -55,9 +55,12 @@ jobs:
         run: sst telemetry disable
 
       - name: Set secret for sst
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: |
-          sst secret set GoogleClientId ${{ secrets.GOOGLE_CLIENT_ID }} --stage uat
-          sst secret set GoogleClientSecret ${{ secrets.GOOGLE_CLIENT_SECRET }} --stage uat
+          sst secret set GoogleClientId $GOOGLE_CLIENT_ID --stage uat
+          sst secret set GoogleClientSecret $GOOGLE_CLIENT_SECRET --stage uat
 
       - name: Install Node.js
         uses: actions/setup-node@v4
