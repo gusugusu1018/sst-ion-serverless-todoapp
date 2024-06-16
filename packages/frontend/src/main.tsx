@@ -14,6 +14,16 @@ Amplify.configure({
       userPoolId: import.meta.env.VITE_USER_POOL_ID,
       userPoolClientId: import.meta.env.VITE_USER_POOL_CLIENT_ID,
       signUpVerificationMethod: 'code',
+      loginWith: {
+        oauth: {
+          domain: import.meta.env.VITE_USER_POOL_DOMAIN,
+          scopes: ['email'],
+          redirectSignIn: ['http://localhost:5173', 'https://ion-todo.com'],
+          redirectSignOut: ['http://localhost:5173', 'https://ion-todo.com'],
+          responseType: 'code',
+          providers: ['Google'],
+        },
+      },
     },
   },
 });

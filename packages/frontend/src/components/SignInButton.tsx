@@ -7,8 +7,9 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { signIn } from 'aws-amplify/auth';
+import { signIn, signInWithRedirect } from 'aws-amplify/auth';
 import React, { useState } from 'react';
+import GoogleButton from 'react-google-button';
 import { useNavigate } from 'react-router-dom';
 
 interface SignInButtonProps {
@@ -60,6 +61,14 @@ export const SignInButton: React.FC<SignInButtonProps> = ({ onSignIn }) => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithRedirect({ provider: 'Google' });
+    } catch (error) {
+      console.error('Error signing in', error);
+    }
+  };
+
   return (
     <>
       <Button variant="outlined" color="primary" onClick={handleOpen}>
@@ -69,6 +78,7 @@ export const SignInButton: React.FC<SignInButtonProps> = ({ onSignIn }) => {
         <DialogTitle>SignIn</DialogTitle>
         <DialogContent>
           <>
+            <GoogleButton onClick={handleGoogleSignIn} />
             <TextField
               label="Email"
               variant="outlined"
@@ -88,7 +98,12 @@ export const SignInButton: React.FC<SignInButtonProps> = ({ onSignIn }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handleSubmit}
+            >
               SignIn
             </Button>
             {signInError && (

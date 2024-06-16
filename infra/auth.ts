@@ -1,7 +1,8 @@
 import { table } from './database';
+import { domain } from './domain';
+import { secret } from './secret';
 
 export const userPool = new sst.aws.CognitoUserPool('UserPool', {
-  usernames: ['email'],
   triggers: {
     postConfirmation: {
       handler: 'packages/backend/src/userService/postConfirmation.main',
@@ -32,19 +33,54 @@ const userPoolDomain = new aws.cognito.UserPoolDomain('UserPoolDomain', {
   userPoolId: userPool.id,
 });
 
+export const googleIdProvider = new aws.cognito.IdentityProvider(
+  'GoogleIdProvider',
+  {
+    userPoolId: userPool.id,
+    providerName: 'Google',
+    providerType: 'Google',
+    providerDetails: {
+      authorize_scopes: 'email',
+      client_id: secret.idpConfig.googleClientId.value,
+      client_secret: secret.idpConfig.googleClientSecret.value,
+    },
+    attributeMapping: {
+      email: 'email',
+      username: 'sub',
+    },
+  },
+);
+
 export const authUrl = $concat(
-  'https://',
   userPoolDomain.domain,
   '.auth.',
   aws.getRegionOutput().name,
   '.amazoncognito.com',
 );
 
+// TODO: change stage to 'production' when ready
+const callbackUrls =
+  $app.stage === 'uat'
+    ? [$interpolate`https://${domain}`]
+    : [
+        $interpolate`https://${domain}`,
+        'https://oauth.pstmn.io/v1/callback',
+        'http://localhost:5173',
+      ];
+
+const logoutUrls =
+  $app.stage === 'uat'
+    ? [$interpolate`https://${domain}`]
+    : [$interpolate`https://${domain}`, 'http://localhost:5173'];
+
 export const userPoolClient = userPool.addClient('WebClient', {
   transform: {
     client: {
-      callbackUrls: ['https://oauth.pstmn.io/v1/callback'],
+      allowedOauthFlows: ['code'],
+      callbackUrls: callbackUrls,
+      logoutUrls: logoutUrls,
       refreshTokenValidity: 1,
+      supportedIdentityProviders: ['COGNITO', 'Google'],
     },
   },
 });
