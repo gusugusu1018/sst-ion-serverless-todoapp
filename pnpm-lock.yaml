@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       sst:
-        specifier: ^3.0.32
-        version: 3.0.32
+        specifier: ^0.1.78
+        version: 0.1.78
     devDependencies:
       '@eslint/js':
         specifier: ^9.4.0
@@ -1492,9 +1492,6 @@ packages:
       '@vue/compiler-sfc':
         optional: true
 
-  '@tsconfig/node20@20.1.4':
-    resolution: {integrity: sha512-sqgsT69YFeLWf5NtJ4Xq/xAF8p4ZQHlmGW74Nu2tD4+g5fAsposc4ZfaaPixVu4y01BEiDCWLRDCvDM5JOsRxg==}
-
   '@types/aws-lambda@8.10.138':
     resolution: {integrity: sha512-71EHMl70TPWIAsFuHd85NHq6S6T2OOjiisPTrH7RgcjzpJpPh4RQJv7PvVvIxc6PIp8CLV7F9B+TdjcAES5vcA==}
 
@@ -2355,8 +2352,34 @@ packages:
     resolution: {integrity: sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==}
     engines: {node: '>=0.10.0'}
 
-  sst@3.0.32:
-    resolution: {integrity: sha512-8+iiV5CP761e+Hv68WLdof6vUi0fk94uLyeKzdMLnKR+68o31vMnYMOT15UAsoaqJp/jow/Q2zbqHmasTkjMCQ==}
+  sst-darwin-arm64@0.1.78:
+    resolution: {integrity: sha512-eFp5495uttAnKA7rm1PujoQQExplRupNo9afAUH+Y83MQET4QLMsm3YPWitWgltbjxzWL/cV1/XeKCZizb78jw==}
+    cpu: [arm64]
+    os: [darwin]
+
+  sst-darwin-x64@0.1.78:
+    resolution: {integrity: sha512-Tl6Pm8sCetc2s4FmOwL2PFjYBT0Hju2XFM2spBaIkhRo73RhriM4Ws/LV6SYKlD1+esFTIhJ52YKkhP9JaRkuA==}
+    cpu: [x64]
+    os: [darwin]
+
+  sst-linux-arm64@0.1.78:
+    resolution: {integrity: sha512-Vp9uTKG6aCK/mGKE7gkbPoR5M2mmsbizv+bDpCCccq4/Jpa2f8SUGJTgWP0vuNPVFWp+6qA+OkKnNC15UUa/CQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  sst-linux-x64@0.1.78:
+    resolution: {integrity: sha512-K7pwuWYmwLFzcfvsZl6OJmAzld0hoaSofRNqB4q1fNlC7R0Sf17GqC/75hzVv0uYlSM7dUaylWkUA+MyVdBK+A==}
+    cpu: [x64]
+    os: [linux]
+
+  sst-linux-x86@0.1.78:
+    resolution: {integrity: sha512-UBbeLsdN/wOSQ5FSluX3shgunsedD9SOX0hCESLoxG4CsUZ1qyW+JNZ9tn49qGbyhzszTbTKkMCwCjALQO81yQ==}
+    cpu: [x86]
+    os: [linux]
+
+  sst@0.1.78:
+    resolution: {integrity: sha512-jwZpDPLrvqEYWvuX1iZwwgMXg4CD8qNs69vzwh2noOxVQnpHg81fvDolecssHmHu7p7K8lI5Vg5NZmkXzWoZJQ==}
+    hasBin: true
     peerDependencies:
       hono: 4.x
       valibot: 0.30.x
@@ -2668,7 +2691,7 @@ snapshots:
       '@aws-sdk/client-sso-oidc': 3.590.0(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/client-sts': 3.590.0
       '@aws-sdk/core': 3.588.0
-      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))(@aws-sdk/client-sts@3.590.0)
+      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/middleware-endpoint-discovery': 3.587.0
       '@aws-sdk/middleware-host-header': 3.577.0
       '@aws-sdk/middleware-logger': 3.577.0
@@ -2893,7 +2916,7 @@ snapshots:
       '@aws-crypto/sha256-js': 3.0.0
       '@aws-sdk/client-sts': 3.590.0
       '@aws-sdk/core': 3.588.0
-      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))(@aws-sdk/client-sts@3.590.0)
+      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/middleware-host-header': 3.577.0
       '@aws-sdk/middleware-logger': 3.577.0
       '@aws-sdk/middleware-recursion-detection': 3.577.0
@@ -3149,7 +3172,7 @@ snapshots:
       '@aws-crypto/sha256-js': 3.0.0
       '@aws-sdk/client-sso-oidc': 3.590.0(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/core': 3.588.0
-      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))(@aws-sdk/client-sts@3.590.0)
+      '@aws-sdk/credential-provider-node': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/middleware-host-header': 3.577.0
       '@aws-sdk/middleware-logger': 3.577.0
       '@aws-sdk/middleware-recursion-detection': 3.577.0
@@ -3270,13 +3293,13 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-ini@3.590.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))(@aws-sdk/client-sts@3.590.0)':
+  '@aws-sdk/credential-provider-ini@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)':
     dependencies:
       '@aws-sdk/client-sts': 3.590.0
       '@aws-sdk/credential-provider-env': 3.587.0
       '@aws-sdk/credential-provider-http': 3.587.0
       '@aws-sdk/credential-provider-process': 3.587.0
-      '@aws-sdk/credential-provider-sso': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))
+      '@aws-sdk/credential-provider-sso': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)
       '@aws-sdk/credential-provider-web-identity': 3.587.0(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/types': 3.577.0
       '@smithy/credential-provider-imds': 3.1.0
@@ -3320,13 +3343,13 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))(@aws-sdk/client-sts@3.590.0)':
+  '@aws-sdk/credential-provider-node@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)':
     dependencies:
       '@aws-sdk/credential-provider-env': 3.587.0
       '@aws-sdk/credential-provider-http': 3.587.0
-      '@aws-sdk/credential-provider-ini': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))(@aws-sdk/client-sts@3.590.0)
+      '@aws-sdk/credential-provider-ini': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/credential-provider-process': 3.587.0
-      '@aws-sdk/credential-provider-sso': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))
+      '@aws-sdk/credential-provider-sso': 3.590.0(@aws-sdk/client-sso-oidc@3.590.0)
       '@aws-sdk/credential-provider-web-identity': 3.587.0(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/types': 3.577.0
       '@smithy/credential-provider-imds': 3.1.0
@@ -3387,10 +3410,10 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-sso@3.590.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))':
+  '@aws-sdk/credential-provider-sso@3.590.0(@aws-sdk/client-sso-oidc@3.590.0)':
     dependencies:
       '@aws-sdk/client-sso': 3.590.0
-      '@aws-sdk/token-providers': 3.587.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))
+      '@aws-sdk/token-providers': 3.587.0(@aws-sdk/client-sso-oidc@3.590.0)
       '@aws-sdk/types': 3.577.0
       '@smithy/property-provider': 3.1.0
       '@smithy/shared-ini-file-loader': 3.1.0
@@ -3654,7 +3677,7 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/token-providers@3.587.0(@aws-sdk/client-sso-oidc@3.590.0(@aws-sdk/client-sts@3.590.0))':
+  '@aws-sdk/token-providers@3.587.0(@aws-sdk/client-sso-oidc@3.590.0)':
     dependencies:
       '@aws-sdk/client-sso-oidc': 3.590.0(@aws-sdk/client-sts@3.590.0)
       '@aws-sdk/types': 3.577.0
@@ -4915,8 +4938,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tsconfig/node20@20.1.4': {}
-
   '@types/aws-lambda@8.10.138': {}
 
   '@types/babel__core@7.20.5':
@@ -5817,13 +5838,33 @@ snapshots:
 
   source-map@0.5.7: {}
 
-  sst@3.0.32:
+  sst-darwin-arm64@0.1.78:
+    optional: true
+
+  sst-darwin-x64@0.1.78:
+    optional: true
+
+  sst-linux-arm64@0.1.78:
+    optional: true
+
+  sst-linux-x64@0.1.78:
+    optional: true
+
+  sst-linux-x86@0.1.78:
+    optional: true
+
+  sst@0.1.78:
     dependencies:
       '@aws-sdk/client-lambda': 3.478.0
-      '@tsconfig/node20': 20.1.4
       aws4fetch: 1.0.18
       jose: 5.2.3
       openid-client: 5.6.4
+    optionalDependencies:
+      sst-darwin-arm64: 0.1.78
+      sst-darwin-x64: 0.1.78
+      sst-linux-arm64: 0.1.78
+      sst-linux-x64: 0.1.78
+      sst-linux-x86: 0.1.78
     transitivePeerDependencies:
       - aws-crt
 

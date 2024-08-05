@@ -19,34 +19,53 @@ export const api = new sst.aws.ApiGatewayV2('Api', {
       corsConfiguration,
     },
     route: {
-      args: (props) => {
-        props.auth = {
-          jwt: {
-            audiences: [userPoolClient.id],
-            issuer: $interpolate`https://cognito-idp.${aws.getRegionOutput().name}.amazonaws.com/${userPool.id}`,
-          },
-        };
+      handler: {
+        link: [table],
       },
     },
   },
 });
 
-api.route('GET /todos', {
-  link: [table],
-  handler: 'packages/backend/src/taskService/list.main',
+const authorizer = api.addAuthorizer({
+  name: 'cognitoAuthorizer',
+  jwt: {
+    issuer: $interpolate`https://cognito-idp.${aws.getRegionOutput().name}.amazonaws.com/${userPool.id}`,
+    audiences: [userPoolClient.id],
+  },
 });
 
-api.route('POST /todos', {
-  link: [table],
-  handler: 'packages/backend/src/taskService/create.main',
+api.route('GET /todos', 'packages/backend/src/taskService/list.main', {
+  auth: {
+    jwt: {
+      authorizer: authorizer.id,
+    },
+  },
 });
 
-api.route('PUT /todos/{id}', {
-  link: [table],
-  handler: 'packages/backend/src/taskService/update.main',
+api.route('POST /todos', 'packages/backend/src/taskService/create.main', {
+  auth: {
+    jwt: {
+      authorizer: authorizer.id,
+    },
+  },
 });
 
-api.route('DELETE /todos/{id}', {
-  link: [table],
-  handler: 'packages/backend/src/taskService/delete.main',
+api.route('PUT /todos/{id}', 'packages/backend/src/taskService/update.main', {
+  auth: {
+    jwt: {
+      authorizer: authorizer.id,
+    },
+  },
 });
+
+api.route(
+  'DELETE /todos/{id}',
+  'packages/backend/src/taskService/delete.main',
+  {
+    auth: {
+      jwt: {
+        authorizer: authorizer.id,
+      },
+    },
+  },
+);

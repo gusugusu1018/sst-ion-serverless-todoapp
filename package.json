@@ -30,7 +30,7 @@
   "author": "gusugusu1018@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "sst": "^3.0.32"
+    "sst": "^0.1.78"
   },
   "devDependencies": {
     "@eslint/js": "^9.4.0",
