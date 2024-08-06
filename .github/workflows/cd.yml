@@ -34,34 +34,6 @@ jobs:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_ARN }}
           aws-region: ${{env.AWS_REGION}}
 
-      - name: Setup sst ion cache
-        uses: actions/cache@v4
-        id: ion-cache
-        with:
-          path: ~/.sst
-          key: ${{ runner.os }}-sst-ion-${{ hashFiles('**/sst-version-lock.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-sst-ion-
-
-      - name: Setup sst from cache
-        if: steps.ion-cache.outputs.cache-hit == 'true'
-        run: 'echo "~/.sst/bin" >> $GITHUB_PATH'
-
-      - name: Install SST ion if not from cache
-        if: steps.ion-cache.outputs.cache-hit != 'true'
-        run: bash ./install_sst.sh
-
-      - name: Disable SST telemetry
-        run: sst telemetry disable
-
-      - name: Set secret for sst
-        env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        run: |
-          sst secret set GoogleClientId $GOOGLE_CLIENT_ID --stage uat
-          sst secret set GoogleClientSecret $GOOGLE_CLIENT_SECRET --stage uat
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
@@ -94,5 +66,16 @@ jobs:
         if: steps.pnpm-cache.outputs.cache-hit != 'true'
         run: pnpm install
 
+      - name: Disable SST telemetry
+        run: npx sst telemetry disable
+
+      - name: Set secret for sst
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: |
+          npx sst secret set GoogleClientId $GOOGLE_CLIENT_ID --stage uat
+          npx sst secret set GoogleClientSecret $GOOGLE_CLIENT_SECRET --stage uat
+
       - name: Deploy
-        run: sst deploy --stage uat
+        run: npx sst deploy --stage uat
